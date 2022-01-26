@@ -1,0 +1,66 @@
+<nav id="nav-header" class="header navbar navbar-expand-lg navbar-light bg-white static-top">
+  <div class="container-fluid">
+    <div class="row col-12">
+      <div class="col-6" style="height: 50px;padding-left: 0;">
+        <img *ngIf="logoUrl" style="max-width: 250px;margin-top: 20px;margin-right: 10px; " alt="Logo" [src]="logoUrl" />
+        <input readonly type="text" class="title-model" [(ngModel)]="modelName"
+          [ngStyle]="{'color': 'inherit', 'width': '100%', 'paddingTop':'5px', 'background-color':'transparent'}" />
+      </div>
+      <div class="col-6" style="padding: 0;">
+        <div *ngIf="loaded" style="padding-top: 10px;" class="d-flex justify-content-end  align-items-center">
+          <button id="btnCancel" class="btn btn-light editor-button-cancel" style="float: right; margin-right: 10px;"
+            type="button" (click)="leave()" [disabled]="isSavingSession">
+            {{_mode.endsWith('readonly')?'Back':'Cancel'}} <i class="fa fa-close" aria-hidden="true"></i>
+          </button>
+          <div *ngIf="!_mode.endsWith('readonly') && !isFormValid && isChanged && validationMessage"
+            class="m-1 p-1 alert alert-danger validation-message">
+            {{validationMessage}}
+            <button type="button" *ngIf="validationMessage.length > 30" [ngbTooltip]="validationMessage"
+              container="body" placement="left-top" tooltipClass="error-tooltip">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <button *ngIf="!_mode.endsWith('readonly') && loaded && _session.draftCallbackUrl" id="btnDraft" [disabled]="isSavingSession"
+            class="btn btn-success editor-button-save" style="float: right; margin-right: 10px;" type="button" (click)="saveSession(true)">
+            Save as Draft
+            <span *ngIf="runningModel" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          </button>
+          <button *ngIf="!_mode.endsWith('readonly') && loaded" id="btnUpload" [disabled]="!isFormValid || isSavingSession"
+            class="btn btn-success editor-button-save" style="float: right;" type="button" (click)="saveSession(false)">
+            Submit <i class="fa fa-check" aria-hidden="true"></i>
+            <span *ngIf="runningModel" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div *ngIf="filtersLoaded | async" [style.height]="getContainerHeight()">
+  <div [style.visibility]="!excelGrid.loadedData ? 'hidden' : ''" [style.width]="displayWidth"
+    [style.height]="displayHeight">
+    <spinner *ngIf="!excelGrid.loadedData" style="position: absolute;"></spinner>
+    <excel-designer #excelGrid (workbookReady)="onWorkbookReady()" [mode]="_mode"
+      (getDimensions)="getDimensions($event)" (changedCellData)="changedCellData($event)"></excel-designer>
+  </div>
+</div>
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Are you sure you want to publish?</h4>
+    <button type="button" class="btn" aria-label="Close" (click)="modal.dismiss('Cancel')">
+      <span style="color: grey;" aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Note: After publishing no further changes can be made to this version.</label>
+      <label for="description">Version comment&nbsp;<span style="font-size: smaller;">(required)</span></label>
+      <textarea class="form-control" id="description" [ngModel]="description"
+        (ngModelChange)="onDescriptionChange($event)" rows="3"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary mr-auto" (click)="modal.dismiss('Cancel')">Cancel</button>
+    <button type="button" [disabled]="!descriptionOk" class="btn btn-primary" (click)="modal.close('Save')">Yes</button>
+  </div>
+</ng-template>

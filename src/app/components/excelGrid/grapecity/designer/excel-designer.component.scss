@@ -1,0 +1,14 @@
+@import "@grapecity/spread-sheets-designer/styles/gc.spread.sheets.designer.min.css";
+@import '@grapecity/spread-sheets/styles/gc.spread.sheets.excel2013white.css';
+
+::ng-deep  :root{
+--contextmenu-left:0;
+}
+
+::ng-deep .gc-ui-contextmenu-subitems-container{
+    left: var(--contextmenu-left) !important;
+}
+
+::ng-deep .gc-popup .ui-widget{
+    position: fixed;
+}

@@ -1,0 +1,47 @@
+.navbar-brand {
+  height: 55px;
+  display: inline-flex;
+  margin-left: 15px;
+  img {
+    margin-left: -20px;
+    max-height: 55px !important;
+    max-width: 250px !important;
+  }
+}
+.branding-header {
+  height: 55px;
+  padding: 0px;
+}
+.title-model {
+  font-size: 30px;
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  color: #808080;
+}
+
+.title-model:focus {
+  outline: 0;
+}
+
+.validation-message {
+  max-width: 300px;
+  max-height: 35px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  position: relative;
+  padding-right: 30px !important;
+  button {
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #ff5f72;
+    color: #ff5f72;
+    background: white;
+    position: absolute;
+    right: 5px;
+    top: 2px;
+  }
+}
