@@ -63,9 +63,8 @@ export class FormComponent implements OnInit {
     this.previousSchema = <ModelDefinition>{};
     this._session = {inputs:[], outputs:[]};
 
-    await delay(1000).then(() => {
+    await delay(1000).then(() => {      
       
-      console.log('excelGrid', this.excelGrid)
       const file = rsc.dataURLtoFile('test.xlsx', rsc.debug64);
       this.excelGrid.handleFileInput(file, this.previousSchema);
 
